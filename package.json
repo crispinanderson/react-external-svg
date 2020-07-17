@@ -1,0 +1,38 @@
+{
+  "name": "fetch-svg-to-react-element",
+  "version": "1.0.0",
+  "description": "A simple tool to load external SVG files and convert to react elements and attach props, styles and methods",
+  "main": "index.js",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/crispinanderson/fetch-svg-to-react-element.git"
+  },
+  "keywords": [
+    "svg",
+    "react",
+    "fetch",
+    "convert"
+  ],
+  "author": "Crispin Anderson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/crispinanderson/fetch-svg-to-react-element/issues"
+  },
+  "homepage": "https://github.com/crispinanderson/fetch-svg-to-react-element#readme",
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "react-scripts": "3.4.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "svg-parser": "^2.0.4",
+    "uuid": "^8.2.0"
+  }
+}
