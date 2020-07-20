@@ -27,18 +27,9 @@ export default class {
         conformedSVG.properties = utils.sanitizeAttributes(conformedSVG.properties);
         utils.noUnSupportedTagNames(conformedSVG.children)
 
-        conformedSVG.children = conformedSVG.children
-            ? conformedSVG.children
-                .map(
-                    (child) => {
-                        return {
-                            ...child,
-                            properties: utils.sanitizeAttributes(child.properties),
-                            children: child.children.length
-                                ? this._conformSVG(child.children)
-                                : conformedSVG.children
-                        }
-                    }) : conformedSVG.children;
+        conformedSVG.children = Array.isArray(conformedSVG.children)
+            ? conformedSVG.children.map((child) => this._conformSVG(child))
+            : conformedSVG.children;
 
         return conformedSVG;
     }
@@ -50,6 +41,16 @@ export default class {
         //layerDepth is evealuated to layerString > seperated identifier ie. svg>g>path -- currently will apply to all children at same layer with same tagName
         const layerDepth = [...layers, elem.tagName];
         const layerString = layerDepth.join('>');
+        const children = () => {
+
+            if (Array.isArray(elem.children)) {
+                return elem.children.map(function (child, i) {
+                    return this._convertToReactElem(child, options, layerDepth, keyID + i)
+                }.bind(this))
+            }
+
+            return null;
+        }
 
         return React.createElement(elem.tagName, {
             //create a unique key, class enables this be the same with each react redraw, thus prevents complete redraw of elements
@@ -59,11 +60,7 @@ export default class {
             ...props[elem.properties.id] || props[layerString] ? props[elem.properties.id] || props[layerString] : {},
             style: styles[elem.properties.id] || styles[layerString] ? styles[elem.properties.id] || styles[layerString] : {},
             //Recursive map for all nested children
-            children: elem.children.length
-                ? elem.children.map(function (c, i) {
-                    return this._convertToReactElem(c, options, layerDepth, keyID + i)
-                }.bind(this))
-                : elem.children
+            children: children()
         })
     }
 
