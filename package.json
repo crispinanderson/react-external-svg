@@ -4,7 +4,7 @@
   "description": "A simple tool to load external SVG files and convert to react elements and attach props, styles and methods",
   "main": "index.js",
   "scripts": {
-    "test": "jest --env=jsdom",
+    "test": "jest --watch",
     "build": "webpack --mode production"
   },
   "repository": {
@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/crispinanderson/fetch-svg-to-react-element#readme",
   "dependencies": {
+    "axios": "^0.19.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "svg-parser": "^2.0.4",

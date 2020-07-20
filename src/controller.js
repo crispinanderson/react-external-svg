@@ -3,6 +3,7 @@ import utils from './utils';
 import React from 'react';
 import { v4 as uuid } from 'uuid';
 import { parse } from 'svg-parser';
+import axios from 'axios';
 
 
 export default class {
@@ -16,15 +17,19 @@ export default class {
 
 
     _parseSVG(svg) {
-        return parse(svg).children[0]
+        const parsedSVG = parse(svg);
+        if (parsedSVG.children.length !== 1) throw 'Only an svg with a single top level <svg>...</svg> wrapper is valid';
+        if (parsedSVG.children[0].tagName !== 'svg') throw 'Passed svg string does not include an <svg> tag as the parent wrapper';
+        return parsedSVG.children[0]
     }
 
     _conformSVG(parsedSVG) {
+        const conformedSVG = { ...parsedSVG }
+        conformedSVG.properties = utils.sanitizeAttributes(conformedSVG.properties);
+        utils.noUnSupportedTagNames(conformedSVG.children)
 
-        parsedSVG.properties = utils.sanitizeAttributes(parsedSVG.properties);
-        parsedSVG.children = utils.sanitizeChildren(parsedSVG.children);
-        parsedSVG.children = parsedSVG.children
-            ? parsedSVG.children
+        conformedSVG.children = conformedSVG.children
+            ? conformedSVG.children
                 .map(
                     (child) => {
                         return {
@@ -32,11 +37,11 @@ export default class {
                             properties: utils.sanitizeAttributes(child.properties),
                             children: child.children.length
                                 ? this._conformSVG(child.children)
-                                : parsedSVG.children
+                                : conformedSVG.children
                         }
-                    }) : parsedSVG.children;
+                    }) : conformedSVG.children;
 
-        return parsedSVG;
+        return conformedSVG;
     }
 
     _convertToReactElem(elem, options, layers = [], keyID = 0) {
@@ -67,13 +72,15 @@ export default class {
         return this._convertToReactElem(parsedSVG, options);
     }
 
-    async fetchSVG(url) {
-        fetch(src)
+    _fetchSVG(src) {
+        return axios.get(src)
             .then((response) => {
-                if (response.status !== 200) {
+                if (response.status !== 200 || !response.data) {
                     throw `Could not fetch file, server responded with ${response.status}: ${response.Text}`
                 }
-                return response.body;
+                if (response.data.includes('<svg')) {
+                    return response.data;
+                }
             })
             .catch((err) => {
                 throw `Could not fetch file, server responded error ${err}`
@@ -81,13 +88,25 @@ export default class {
     }
 
 
-    async convertSVG(svg, opts) {
+    convert(svg, opts) {
 
         const options = { ...this.defaults, ...opts };
 
+
         const parsedSVG = this._parseSVG(svg);
         const conformedSVG = this._conformSVG(parsedSVG);
-        return this._createReactElements(conformedSVG, options);
+        const elements = this._createReactElements(conformedSVG, options);
+
+        return elements;
+
+
+    }
+
+    fetchAndConvert(src, opts) {
+
+        return this._fetchSVG(src).then((svg) => {
+            return this.convert(svg, opts);
+        })
 
     }
 }

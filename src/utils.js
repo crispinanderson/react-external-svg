@@ -49,7 +49,7 @@ type useMap value width wmode wrap`.split(/([\s\n\r])/);
 const ALLOWED_ATTRIBUTES = [...ALLOWED_HTML_ATTRIBUTES, ...ALLOWED_SVG_ATTRIBUTES];
 
 const ALLOWED_TAGS = `circle clipPath defs ellipse g line linearGradient mask path pattern polygon polyline
-radialGradient rect stop svg text tspan use`.split(' ');
+radialGradient rect stop svg text tspan use`.split(/([\s\n\r])/);
 
 const DATA_ATTRIBUTE = /^data-/i;
 
@@ -97,9 +97,18 @@ const sanitizeAttributes = function (attributes) {
     return { ...allowed, ...custom };
 };
 
-const sanitizeChildren = function (children) {
+const noUnSupportedTagNames = function (children) {
     if (!children) return null;
-    return children.filter((child) => utils.ALLOWED_TAGS.indexOf(child.tagName) !== -1);
+
+    for (let child of children) {
+        if (utils.ALLOWED_TAGS.indexOf(child.tagName) === -1) {
+            throw 'Unsupported tags - cannot process element of type: ' + child.tagName;
+        }
+        if (child.children.length) {
+            return noUnSupportedTagNames(child.children);
+        }
+    }
+    return true;
 };
 
 const styleAttribute = function (string) {
@@ -133,7 +142,7 @@ export var utils = {
     processAttributeName,
     unnamespaceAttributeName,
     sanitizeAttributes,
-    sanitizeChildren,
+    noUnSupportedTagNames,
     styleAttribute,
     getElementById
 }
