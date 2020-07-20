@@ -90,15 +90,11 @@ export default class {
     convert(svg, opts) {
 
         const options = { ...this.defaults, ...opts };
-
-
         const parsedSVG = this._parseSVG(svg);
         const conformedSVG = this._conformSVG(parsedSVG);
         const elements = this._createReactElements(conformedSVG, options);
 
         return elements;
-
-
     }
 
     fetchAndConvert(src, opts) {
