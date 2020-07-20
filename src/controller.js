@@ -18,7 +18,6 @@ export default class {
 
     _parseSVG(svg) {
         const parsedSVG = parse(svg);
-        if (parsedSVG.children.length !== 1) throw 'Only an svg with a single top level <svg>...</svg> wrapper is valid';
         if (parsedSVG.children[0].tagName !== 'svg') throw 'Passed svg string does not include an <svg> tag as the parent wrapper';
         return parsedSVG.children[0]
     }

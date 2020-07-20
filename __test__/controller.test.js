@@ -10,9 +10,6 @@ viewBox="0 0 208 105.7" style="enable-background:new 0 0 208 105.7;" xml:space="
     <polyline points="112,2 136.3,2 136.3,25.3 "/>
 </svg>`
 
-const failMultipleTopLevelSvg = `<svg><rect x=0 y=0 width=100 height=100></svg>
-<svg><rect x=0 y=0 width=100 height=100></svg>`
-
 const failNoSVGWrapper = `<g>
 <polyline  points="59,26.3 59,2 84.3,2 "/>
     <polyline points="83.3,79.3 59,79.3 59,46.7 "/>
@@ -40,11 +37,7 @@ const failUnsupportedTags = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org
 describe('convert - ', () => {
 
     test('it throws an error when passed svg text does not include <svg> tag', () => {
-        expect(() => controller.convert(failNoSVGWrapper)).toThrow()
-    })
-
-    test('it throws an error when passed svg text with multiple top level items', () => {
-        expect(() => controller.convert(failMultipleTopLevelSvg)).toThrow()
+        expect(() => controller.convert(failNoSVGWrapper)).toThrow('Passed svg string does not include an <svg> tag as the parent wrapper')
     })
 
     test('it throws an error as svg contains unsupported tags', () => {
