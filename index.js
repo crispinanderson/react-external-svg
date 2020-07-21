@@ -4,16 +4,17 @@ const controller = new Controller();
 
 export const ExternalSVG = (props) => {
 
+    const { applyStyles, applyProps, src, onError } = props;
     const [render, setRender] = useState(null);
 
     useEffect(() => {
-        if (props.src.includes('/') && props.src.includes('.svg')) {
+        if (src.includes('/') && src.includes('.svg')) {
             try {
-                controller.fetchAndConvert(props.src, props).then((converted) => setRender(converted))
+                controller.fetchAndConvert(src, { applyProps, applyStyles }).then((converted) => setRender(converted))
             }
             catch (err) {
-                if (props.onError) {
-                    props.onError(err)
+                if (onError) {
+                    onError(err)
                 }
                 else {
                     console.error(err)
@@ -21,14 +22,14 @@ export const ExternalSVG = (props) => {
             }
         }
 
-        if (props.src.includes('<svg')) {
+        if (src.includes('<svg')) {
             try {
-                const converted = controller.convert(props.src, props);
+                const converted = controller.convert(src, { applyProps, applyStyles });
                 setRender(converted)
             }
             catch (err) {
-                if (props.onError) {
-                    props.onError(err)
+                if (onError) {
+                    onError(err)
                 }
                 else {
                     console.error(err)
@@ -37,7 +38,7 @@ export const ExternalSVG = (props) => {
 
         }
 
-    }, [props.src]);
+    }, [src]);
 
     return (<>{render}</>)
 }

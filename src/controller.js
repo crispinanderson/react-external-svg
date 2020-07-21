@@ -10,8 +10,8 @@ export default class {
     constructor() {
         this.uuid = uuid();
         this.defaults = {
-            styles: {},
-            props: {}
+            applyStyles: {},
+            applyProps: {}
         }
     }
 
@@ -34,34 +34,64 @@ export default class {
         return conformedSVG;
     }
 
-    _convertToReactElem(elem, options, layers = [], keyID = 0) {
+    _convertToReactElem(elem, options, relativePath = [], childID = 0) {
 
-        const { props, styles } = options;
+        const thisPath = [...relativePath, [elem.tagName, 'child' + childID]];
+        const applyOptions = this._applyOptions
 
-        //layerDepth is evealuated to layerString > seperated identifier ie. svg>g>path -- currently will apply to all children at same layer with same tagName
-        const layerDepth = [...layers, elem.tagName];
-        const layerString = layerDepth.join('>');
-        const children = () => {
+        const convertChildren = () => {
 
             if (Array.isArray(elem.children)) {
                 return elem.children.map(function (child, i) {
-                    return this._convertToReactElem(child, options, layerDepth, keyID + i)
+                    return this._convertToReactElem(child, options, thisPath, i)
                 }.bind(this))
             }
 
             return null;
         }
 
-        return React.createElement(elem.tagName, {
+        const elements = React.createElement(elem.tagName, {
             //create a unique key, class enables this be the same with each react redraw, thus prevents complete redraw of elements
-            key: this.uuid + '_' + keyID,
+            key: this.uuid + '_' + childID,
             ...elem.properties,
-            //Merge passed properties and styles, either by id or layerString
-            ...props[elem.properties.id] || props[layerString] ? props[elem.properties.id] || props[layerString] : {},
-            style: styles[elem.properties.id] || styles[layerString] ? styles[elem.properties.id] || styles[layerString] : {},
+            ...applyOptions(elem.properties.id, thisPath, options.applyProps),
+            style: elem.properties.style ? { ...elem.properties.style, ...applyOptions(elem.properties.id, thisPath, options.applyStyles) } : applyOptions(elem.properties.id, thisPath, options.applyStyles),
             //Recursive map for all nested children
-            children: children()
+            children: convertChildren()
         })
+
+        return elements;
+    }
+
+    _applyOptions(id, pathIdentifier, options) {
+        let returnObj = {};
+
+        for (let key in options) {
+            let applyProp = true;
+            if (key.includes('>')) {
+                const pathToElem = key.split('>');
+                if (pathToElem.length === pathIdentifier.length) {
+                    for (let i = 0; i < pathToElem.length; i++) {
+                        let pathID = pathToElem[i];
+                        if (!pathIdentifier[i].includes(pathID)) {
+                            applyProp = false;
+                            break;
+                        }
+                    }
+                }
+                else {
+                    applyProp = false;
+                }
+
+
+            }
+            else if (id !== key) {
+                applyProp = false;
+            }
+
+            if (applyProp) returnObj = { ...returnObj, ...options[key] };
+        }
+        return returnObj;
     }
 
     _createReactElements(parsedSVG, options) {
@@ -84,9 +114,9 @@ export default class {
     }
 
 
-    convert(svg, opts) {
+    convert(svg, opts = {}) {
 
-        const options = { ...this.defaults, ...opts };
+        const options = { applyProps: opts.applyProps || {}, applyStyles: opts.applyStyles || {} };
         const parsedSVG = this._parseSVG(svg);
         const conformedSVG = this._conformSVG(parsedSVG);
         const elements = this._createReactElements(conformedSVG, options);

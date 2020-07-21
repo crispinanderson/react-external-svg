@@ -78,8 +78,7 @@ const sanitizeAttributes = function (attributes) {
     const allowed = utils.ALLOWED_ATTRIBUTES.reduce(function (hash, name) {
         if (name in attributes) {
             var unnamespacedName = utils.unnamespaceAttributeName(name);
-
-            hash[unnamespacedName] = attributes[name];
+            hash[unnamespacedName] = unnamespacedName !== 'style' ? attributes[name] : styleAttribute(attributes[name]);
         }
 
         return hash;
