@@ -17,7 +17,7 @@
     "fetch",
     "convert"
   ],
-  "author": "Crispin Anderson",
+  "author": "Crispin Anderson <crispin.anderson@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/crispinanderson/react-external-svg/issues"
