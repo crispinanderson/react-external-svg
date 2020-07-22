@@ -71,3 +71,18 @@ it('applies the applyStyles to an element using element id', async () => {
 
 });
 
+it('applies the applyStyles to main svg using child0> reference', async () => {
+    const { container } = render(<ExternalSVG src={validSVG} applyStyles={{ 'child0>': { backgroundColor: "rgb(186, 218, 51)" } }} />);
+    await waitFor(() => {
+        expect(container.querySelector('svg').style.backgroundColor).toBe("rgb(186, 218, 51)");
+    })
+
+});
+
+it('applies the applyStyles to main svg using svg> tag reference', async () => {
+    const { container } = render(<ExternalSVG src={validSVG} applyStyles={{ 'svg>': { backgroundColor: "rgb(186, 218, 51)" } }} />);
+    await waitFor(() => {
+        expect(container.querySelector('svg').style.backgroundColor).toBe("rgb(186, 218, 51)");
+    })
+
+});
