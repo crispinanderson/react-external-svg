@@ -69,7 +69,7 @@ export default class {
         for (let key in options) {
             let applyProp = true;
             if (key.includes('>')) {
-                const pathToElem = key.split('>');
+                const pathToElem = key.split('>').filter((s) => s !== '');
                 if (pathToElem.length === pathIdentifier.length) {
                     for (let i = 0; i < pathToElem.length; i++) {
                         let pathID = pathToElem[i];
