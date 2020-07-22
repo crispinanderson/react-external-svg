@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Controller from './src/controller';
+import Controller from './controller';
 const controller = new Controller();
 
 export const ExternalSVG = (props) => {
@@ -8,6 +8,7 @@ export const ExternalSVG = (props) => {
     const [render, setRender] = useState(null);
 
     useEffect(() => {
+
         if (src.includes('/') && src.includes('.svg')) {
             try {
                 controller.fetchAndConvert(src, { applyProps, applyStyles }).then((converted) => setRender(converted))
@@ -38,7 +39,7 @@ export const ExternalSVG = (props) => {
 
         }
 
-    }, [src]);
+    }, [src, applyProps, applyStyles]);
 
     return (<>{render}</>)
 }
