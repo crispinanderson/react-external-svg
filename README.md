@@ -1,21 +1,21 @@
 # react-external-svg
 A simple tool to load external SVG files and convert to react elements and attach props, styles and methods.
 
-##### Use if:
+##### Use when you:
 
-* No access to the svg at build time.
-* Need to dynamically accept an svg.
+* Have no access to the svg at build time.
+* Need to dynamically accept an svg at run time.
 * Need to be able to apply static or dynamic properties and styling to the loaded svg.
 
 
 ##### Example use case: 
 
 * Users upload an svg logo
-* Logo can be customised within your online logo editor react app
+* Logo can be customized within your online logo editor react app
 * The updated logo can then be downloaded by the user
 
 
-This tool was created for a very specific use case and has an unnessecary overhead if you can build the SVG directly into your codebase, in which case i would recomend manually converting your svg to jsx or importing as a module with CRA or converting with something like <a href='https://react-svgr.com/' > SVGR </a> 
+This tool was created for a very specific use case and has an unnecessary overhead if you can build the SVG directly into your codebase, in which case i would recommend manually converting your svg to jsx or importing as a module with CRA or converting with something like <a href='https://react-svgr.com/' > SVGR </a> 
 
 ### Usage
 ```
@@ -82,7 +82,7 @@ applyProps={{
   }}
   ```
 
-##### I can also mix and match thse identifiers as I like, rembering to use > to delinate each identifier - eg.
+##### I can also mix and match these identifiers as I like, remembering to use > to delineate each identifier - eg.
 
 ```Javascript
 applyProps={{
@@ -135,29 +135,47 @@ const src = 'https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg'
 </svg>
 ```
 
-##### In this example we will load in the react logo from wikimedia and aplly a rotation effect when the icon is clicked with a dynamic rotation property
+##### In this example we will load in the react logo from wikimedia and apply a rotation effect when the icon is clicked with a dynamic rotation property
 
 ```Javascript
-function ReactLogo = () => {
+import React, { useState } from 'react';
+import ExternalSVG from "react-external-svg";
+
+const ReactLogo = () => {
   const src = 'https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg';
+
+  const errorHandler = (err) => {
+    console.error(err)
+  }
+
   const [rotation, setRotation] = useState(0);
+
   const clickHandler = () => {
     setRotation(rotation + 360);
   }
 
   const applyStyles = {
-    'svg>g>path': {
-        transform: `rotate(${rotation}deg)`
-    } 
-  }
-
-  const applyProps: {
-    'child0': {
-        onClick: clickHandler
+    'svg>g': {
+      transform: `rotate(${rotation}deg)`,
+      transition: 'transform 1s',
+      transformOrigin: 'center'
     }
   }
 
-  return <ExternalSVG src={src} applyStyles={applyStyles} applyProps={applyProps} onError={errorHandler}/>
+  const applyProps = {
+    'svg>': {
+      width: '50%',
+      height: '50%'
+    },
+    'svg>g': {
+      onClick: () => clickHandler()
+    },
+    'svg>g>path': {
+      fill: 'turquoise'
+    }
+  }
+
+  return (<><ExternalSVG src={src} applyStyles={applyStyles} applyProps={applyProps} onError={errorHandler} /></>)
 }
 
 
@@ -172,5 +190,6 @@ function ReactLogo = () => {
 ##### <p><b>onError: (function) - </b> Accepts a function:  (err) => {} </P> 
 ---
 
-###### This tool is losely based on https://github.com/janjakubnanista/svg-to-jsx please check that out if need a simple tool that takes in SVG and spits out JSX 
+###### react-external-svg is loosely based on https://github.com/janjakubnanista/svg-to-jsx please check that out if need a simple tool that takes in SVG and spits out JSX 
+###### react-external-svg relies on svg-parser by Rich Harris https://github.com/Rich-Harris/svg-parser
 
