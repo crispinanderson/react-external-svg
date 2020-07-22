@@ -35,7 +35,7 @@ export const ExternalSVG = (props) => {
     //Object equality check prev & current props
     const prevApplyProps = useRef(applyProps);
     const prevApplyStyles = useRef(applyStyles);
-    const shouldRedraw = JSON.stringify(prevApplyProps.current) === JSON.stringify(applyProps) || JSON.stringify(prevApplyStyles.current) === JSON.stringify(applyStyles);
+    const shouldRedraw = JSON.stringify(prevApplyProps.current) !== JSON.stringify(applyProps) || JSON.stringify(prevApplyStyles.current) !== JSON.stringify(applyStyles);
 
     useEffect(() => {
         prevApplyProps.current = applyProps;
@@ -44,7 +44,8 @@ export const ExternalSVG = (props) => {
 
     //Create render
     useEffect(() => {
-        if (svg && svg.includes('<svg') || shouldRedraw) {
+
+        if (svg && svg.length && svg.includes('<svg') || shouldRedraw) {
             try {
                 const converted = controller.convert(svg, { applyProps, applyStyles });
                 setRender(converted)

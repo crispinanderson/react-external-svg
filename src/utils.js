@@ -103,7 +103,7 @@ const noUnSupportedTagNames = function (children) {
         if (utils.ALLOWED_TAGS.indexOf(child.tagName) === -1) {
             throw 'Unsupported tags - cannot process element of type: ' + child.tagName;
         }
-        if (child.children.length) {
+        if (child.children && child.children.length) {
             return noUnSupportedTagNames(child.children);
         }
     }
