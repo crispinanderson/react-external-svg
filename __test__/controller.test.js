@@ -53,12 +53,12 @@ describe('fetchAndConvert - ', () => {
 
     test('throws an error when the requested file cannot be found', async () => {
 
-        await controller.fetchAndConvert('https://upload.wikimedia.org/no-file-here.svg')
+        await controller.fetchSVG('https://upload.wikimedia.org/no-file-here.svg')
             .catch(err => expect(err).toBe('Could not fetch file, server responded error Error: Request failed with status code 404'));
     })
 
     test('returns a valid react element', async () => {
-        await controller.fetchAndConvert('https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg')
-            .then(element => expect(isValidElement(element)).toBe(true));
+        const element = await controller.fetchSVG('https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg').then((svg) => controller.convert(svg))
+        expect(isValidElement(element)).toBe(true);
     })
 })
