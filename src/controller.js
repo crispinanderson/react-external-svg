@@ -98,7 +98,7 @@ export default class {
         return this._convertToReactElem(parsedSVG, options);
     }
 
-    _fetchSVG(src) {
+    fetchSVG(src) {
         return axios.get(src)
             .then((response) => {
                 if (response.status !== 200 || !response.data) {
@@ -124,13 +124,6 @@ export default class {
         return elements;
     }
 
-    fetchAndConvert(src, opts) {
-
-        return this._fetchSVG(src).then((svg) => {
-            return this.convert(svg, opts);
-        })
-
-    }
 }
 
 
