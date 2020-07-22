@@ -181,6 +181,8 @@ const ReactLogo = () => {
 
 ```
 
+#### DEMO https://codesandbox.io/s/react-external-svg-demo-ysfci
+
 
 ---
 #### Props
