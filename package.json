@@ -1,57 +1,57 @@
 {
-  "name": "react-external-svg",
-  "version": "1.0.0",
-  "description": "A simple tool to load external SVG files and convert to react elements and attach props, styles and methods",
-  "main": "build/index.js",
-  "scripts": {
-    "test": "jest --watch",
-    "build": "webpack --mode production --display-modules",
-    "start": "webpack --watch"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/crispinanderson/react-external-svg.git"
-  },
-  "keywords": [
-    "svg",
-    "react",
-    "fetch",
-    "convert"
-  ],
-  "author": "Crispin Anderson <crispin.anderson@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/crispinanderson/react-external-svg/issues"
-  },
-  "homepage": "https://github.com/crispinanderson/react-external-svg#readme",
-  "dependencies": {
-    "axios": "^0.21.1",
-    "svg-parser": "^2.0.4",
-    "uuid": "^8.2.0",
-    "webpack-node-externals": "^2.5.0"
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.10.5",
-    "@babel/core": "^7.10.5",
-    "@babel/preset-env": "^7.10.4",
-    "@babel/preset-react": "^7.10.4",
-    "@testing-library/react": "^10.4.7",
-    "babel-loader": "^8.1.0",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "jest": "^25.2.7",
-    "jest-environment-enzyme": "^7.1.2",
-    "jest-enzyme": "^7.1.2",
-    "jsdom-mount": "^0.1.0",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "webpack": "^4.42.1",
-    "webpack-cli": "^3.3.11"
-  },
-  "peerDependencies": {
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "axios": "^0.21.1",
-    "svg-parser": "^2.0.4",
-    "uuid": "^8.2.0"
-  }
+    "name": "react-external-svg",
+    "version": "1.0.1",
+    "description": "A simple tool to load external SVG files and convert to react elements and attach props, styles and methods",
+    "main": "build/index.js",
+    "scripts": {
+        "test": "jest --watch",
+        "build": "webpack --mode production --display-modules",
+        "start": "webpack --watch"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/crispinanderson/react-external-svg.git"
+    },
+    "keywords": [
+        "svg",
+        "react",
+        "fetch",
+        "convert"
+    ],
+    "author": "Crispin Anderson <crispin.anderson@gmail.com>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/crispinanderson/react-external-svg/issues"
+    },
+    "homepage": "https://github.com/crispinanderson/react-external-svg#readme",
+    "dependencies": {
+        "axios": "^0.21.1",
+        "svg-parser": "^2.0.4",
+        "uuid": "^8.2.0",
+        "webpack-node-externals": "^2.5.0"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.10.5",
+        "@babel/core": "^7.10.5",
+        "@babel/preset-env": "^7.10.4",
+        "@babel/preset-react": "^7.10.4",
+        "@testing-library/react": "^10.4.7",
+        "babel-loader": "^8.1.0",
+        "babel-plugin-transform-object-rest-spread": "^6.26.0",
+        "jest": "^25.2.7",
+        "jest-environment-enzyme": "^7.1.2",
+        "jest-enzyme": "^7.1.2",
+        "jsdom-mount": "^0.1.0",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1",
+        "webpack": "^4.42.1",
+        "webpack-cli": "^3.3.11"
+    },
+    "peerDependencies": {
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1",
+        "axios": "^0.21.1",
+        "svg-parser": "^2.0.4",
+        "uuid": "^8.2.0"
+    }
 }
