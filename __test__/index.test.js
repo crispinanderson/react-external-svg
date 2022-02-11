@@ -3,6 +3,7 @@ import React from "react";
 import { render, waitFor } from '@testing-library/react'
 import ExternalSVG from '../src/index';
 
+
 const validSVG = `<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 viewBox="0 0 208 105.7" style="enable-background:new 0 0 208 105.7;" xml:space="preserve">
     <g>
@@ -12,6 +13,9 @@ viewBox="0 0 208 105.7" style="enable-background:new 0 0 208 105.7;" xml:space="
         <polyline points="112,2 136.3,2 136.3,25.3 "/>
     </g>
 </svg>`
+
+
+
 
 it('renders svg from string', async () => {
     const { container } = render(<ExternalSVG src={validSVG} />);
@@ -24,12 +28,10 @@ it('renders svg from string', async () => {
 });
 
 it('renders svg from url', async () => {
-    const { container } = render(<ExternalSVG src={'https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg'} />);
+    const { container } = render(<ExternalSVG src={'https://upload.wikimedia.org/wikipedia/commons/b/bd/Test.svg'} />);
     await waitFor(() => {
-        expect(container.getElementsByTagName('g').length).toBe(1);
-        expect(container.getElementsByTagName('path').length).toBe(1)
-        expect(container.getElementsByTagName('polygon').length).toBe(2);
-        expect(container.getElementsByTagName('circle').length).toBe(1);
+        expect(container.getElementsByTagName('path').length).toBe(2)
+        expect(container.getElementsByTagName('circle').length).toBe(3);
     })
 
 });
